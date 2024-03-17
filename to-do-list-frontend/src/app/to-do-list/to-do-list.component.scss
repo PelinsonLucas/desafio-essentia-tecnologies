@@ -1,0 +1,185 @@
+// Import Angular Material styles
+@use '@angular/material' as mat;  
+
+// Thin scrollbar
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+// Styles for the main to-do list container
+.to-do-list-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 98lvw;
+  height: 90lvh;
+  min-height: 500px;
+  min-width: 700px;
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+
+// Task Creation form formatting
+
+.task-creation-menu{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  height: fit-content;
+  border-radius: 10px;
+}
+
+.title{
+  font-size: 2.5rem;
+  font-weight: 500;
+}
+
+mat-divider{
+  height: 60px;
+}
+.mat-mdc-card-content{
+  width: 60%;
+  height: fit-content;
+  padding: 0px;
+}
+
+.task-form{
+  padding: 30px 15px 30px 15px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.mat-mdc-form-field{
+  min-width: 42%;
+  height: 37px;
+}
+
+.mat-mdc-form-field-flex{
+  height: 37px;
+  --mat-form-field-container-vertical-padding: 7px;
+}
+
+// List formatting
+
+.list-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+   .title{
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+    position: sticky;
+  }
+}
+
+.list{
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  height: 100%;
+  width: 100%;
+  padding-top: 30px;
+}
+
+.mdc-list{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: fit-content;
+  width: 100%;
+}
+
+// Task body styling
+
+.task{
+  padding: 0px 10px 0px 10px;
+  align-self: center;
+  justify-content: center;
+  width: 80%;
+  .checkbox{
+    pointer-events: none;
+  }
+}
+
+.mat-mdc-list-item-unscoped-content{
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.task-title{
+  overflow: hidden;
+  text-wrap: wrap;
+  width: 48%;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+.task-description{
+  overflow: hidden;
+  text-wrap: wrap;
+  min-height: 100%;
+  width: 48%;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+// Mixin for color theming
+
+@mixin color($toDoList-theme){
+  .to-do-list-container{
+    background-color: mat.get-theme-color($toDoList-theme, 'accent', 100);
+    color: mat.get-theme-color($toDoList-theme, 'accent', 100-contrast);
+  }
+
+  ::-webkit-scrollbar-track {
+    background: mat.get-theme-color($toDoList-theme, 'accent', 50);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: mat.get-theme-color($toDoList-theme, 'primary', 200);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: mat.get-theme-color($toDoList-theme, 'primary', 300);
+  }
+
+  .task{
+    border-top: 1px solid mat.get-theme-color($toDoList-theme, 'primary', 400);
+  }
+
+  .task:hover{
+    background-color: mat.get-theme-color($toDoList-theme, 'primary', 100);
+  }
+
+  .task-creation-menu{
+    border: 2px solid mat.get-theme-color($toDoList-theme, 'primary', 400);
+  }
+
+  .title{
+    color: mat.get-theme-color($toDoList-theme, 'primary', 600);
+  }
+}
+
+@mixin theme($toDoList-theme) {
+  @if mat.theme-has($toDoList-theme, color) {
+    @include color($toDoList-theme);
+  }
+}
+  

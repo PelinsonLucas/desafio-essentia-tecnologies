@@ -1,0 +1,37 @@
+<div mat-card class="to-do-list-container">
+    <div class="task-creation-menu">
+        <mat-divider></mat-divider>
+        <mat-card-header>
+            <mat-card-title class="title">Create a new task</mat-card-title>
+        </mat-card-header>
+        <mat-card-content role="region">
+            <form class="task-form">
+                <mat-form-field appearance="outline">
+                    <input matInput autocomplete="false" name="title" placeholder="Task title" [(ngModel)]="newTask.title">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <input matInput autocomplete="false" name="description" placeholder="Description" [(ngModel)]="newTask.description">
+                </mat-form-field>
+                <button mat-raised-button type="submit" color="primary" (click)="addTask()">Add</button>
+            </form>
+        </mat-card-content>
+        <mat-divider></mat-divider>
+    </div>
+    <div class="list-container">
+        <mat-card-header>
+            <mat-card-title class="title">Tasks</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="list">
+            <mat-list>
+                <mat-list-item (click)="changeTaskCompletion(task)" class="task" *ngFor="let task of tasks">
+                    <mat-checkbox class="checkbox" [(ngModel)]="task.completed"/>
+                    <h4 class="task-title">{{task.title}}</h4>
+                    <p class="task-description">{{task.description}}</p>
+                    <button mat-icon-button color="accent" (click)="deleteTask(task)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </mat-list-item>
+            </mat-list>
+        </mat-card-content>
+    </div>
+</div>
