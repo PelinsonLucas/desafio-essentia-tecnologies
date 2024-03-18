@@ -1,20 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
-import {MatCardModule} from '@angular/material/card';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatListModule} from '@angular/material/list';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatIconModule} from '@angular/material/icon';
-import {FormsModule} from '@angular/forms';
-import {MatButtonModule} from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { ToDoListAPIService } from '../to-do-list-api.service';
-import {CdkMenu, CdkMenuItem, CdkContextMenuTrigger, CdkMenuTrigger} from '@angular/cdk/menu';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {provideNativeDateAdapter} from '@angular/material/core';
+import { CdkMenu, CdkMenuItem, CdkContextMenuTrigger, CdkMenuTrigger } from '@angular/cdk/menu';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { EditDialogComponent } from '../edit-dialog/edit-dialog.component';
 
-type Item = {
+export type Item = {
   id: number | null;
   dueDate: number | null;
   title: string;
@@ -32,11 +35,13 @@ type Item = {
   styleUrl: './to-do-list.component.scss'
 })
 export class ToDoListComponent {
+  @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
+
   tasks: Array<Item> = [];
   newTask: Item = {id: null, dueDate: null, title: '', description: '', completed: false};
   selectedTask: Item | null = null;
 
-  constructor(private toDoListAPIService: ToDoListAPIService) {}
+  constructor(private toDoListAPIService: ToDoListAPIService, public dialog: MatDialog) {}
 
   ngOnInit() {
     this.getTasks();
@@ -45,8 +50,7 @@ export class ToDoListComponent {
   async addTask() {
     if (this.newTask.title !== '') {
       this.tasks.push((await this.toDoListAPIService.createToDoItem(this.newTask)).data);
-      this.newTask.title = '';
-      this.newTask.description = '';
+      this.newTask = {id: null, dueDate: null, title: '', description: '', completed: false};
     }
   }
 
@@ -81,4 +85,13 @@ export class ToDoListComponent {
       this.selectedTask = null;
     }
   };
+
+  openEditDialog() {
+    const dialogRef = this.dialog.open(EditDialogComponent, {data: this.selectedTask, restoreFocus: false});
+    //Restore focus
+    dialogRef.afterClosed().subscribe((result) => {
+      this.updateTask(result.data);
+      this.menuTrigger.focus();
+    });
+  }
 }

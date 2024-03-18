@@ -8,16 +8,16 @@
             <form class="task-form">
                 <mat-form-field appearance="outline">
                     <mat-label>Choose a date</mat-label>
-                    <input matInput name="date" [matDatepicker]="picker" [(ngModel)]="newTask.dueDate">
+                    <input matInput name="date" required="true" [matDatepicker]="picker" [(ngModel)]="newTask.dueDate">
                     <mat-hint>MM/DD/YYYY</mat-hint>
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                   </mat-form-field>
                 <mat-form-field appearance="outline">
-                    <input matInput autocomplete="false" name="title" placeholder="Task title" [(ngModel)]="newTask.title">
+                    <input matInput required="true" name="title" placeholder="Task title" [(ngModel)]="newTask.title">
                 </mat-form-field>
                 <mat-form-field appearance="outline">
-                    <input matInput autocomplete="false" name="description" placeholder="Description" [(ngModel)]="newTask.description">
+                    <input matInput name="description" placeholder="Description" [(ngModel)]="newTask.description">
                 </mat-form-field>
                 <button mat-raised-button type="submit" color="primary" (click)="addTask()">Add</button>
             </form>
@@ -46,14 +46,7 @@
 
 <ng-template #menuTemplate>
     <div class="options-menu" cdkMenu>
-      <button class="options-menu-item" cdkMenuItem>Edit</button>
+      <button class="options-menu-item" cdkMenuItem (click)="openEditDialog()">Edit</button>
       <button class="options-menu-item" cdkMenuItem (click)="deleteSelectedTask()">Delete</button>
-    </div>
-</ng-template>
-
-<ng-template #editTemplate>
-    <div class="edit-menu" cdkMenu>
-      <button class="menu-item" cdkMenuItem>Edit</button>
-      <button class="menu-item" cdkMenuItem>Delete</button>
     </div>
 </ng-template>
