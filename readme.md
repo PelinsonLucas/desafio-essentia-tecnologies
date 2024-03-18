@@ -9,6 +9,6 @@ To execute this application locally, please follow the instructions available in
 
 ### Resources
 
-[Front-end](https://github.com/PelinsonLucas/desafio-essentia-tecnologies/to-do-list-backend)
+[Front-end](https://github.com/PelinsonLucas/desafio-essentia-tecnologies/tree/main/to-do-list-backend)
 <br>
-[Back-end](https://github.com/PelinsonLucas/desafio-essentia-tecnologies/to-do-list-frontend)
+[Back-end](https://github.com/PelinsonLucas/desafio-essentia-tecnologies/tree/main/to-do-list-frontend)
