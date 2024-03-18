@@ -7,6 +7,13 @@
         <mat-card-content role="region">
             <form class="task-form">
                 <mat-form-field appearance="outline">
+                    <mat-label>Choose a date</mat-label>
+                    <input matInput name="date" [matDatepicker]="picker" [(ngModel)]="newTask.dueDate">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                <mat-form-field appearance="outline">
                     <input matInput autocomplete="false" name="title" placeholder="Task title" [(ngModel)]="newTask.title">
                 </mat-form-field>
                 <mat-form-field appearance="outline">
@@ -21,17 +28,32 @@
         <mat-card-header>
             <mat-card-title class="title">Tasks</mat-card-title>
         </mat-card-header>
+        <mat-divider></mat-divider>
         <mat-card-content class="list">
             <mat-list>
-                <mat-list-item (click)="changeTaskCompletion(task)" class="task" *ngFor="let task of tasks">
-                    <mat-checkbox class="checkbox" [(ngModel)]="task.completed"/>
+                <mat-list-item [cdkContextMenuTriggerFor]="menuTemplate" (contextmenu)="setSelectedTask(task)" (click)="changeTaskCompletion(task)" class="task" *ngFor="let task of tasks">
+                    <mat-checkbox class="checkbox" (keydown.enter)="changeTaskCompletion(task)" [(ngModel)]="task.completed"/>
                     <h4 class="task-title">{{task.title}}</h4>
                     <p class="task-description">{{task.description}}</p>
-                    <button mat-icon-button color="accent" (click)="deleteTask(task)">
-                        <mat-icon>delete</mat-icon>
+                    <button class="options-button" mat-icon-button [cdkMenuTriggerFor]="menuTemplate" (click)="$event.stopPropagation(); setSelectedTask(task);" color="accent" >
+                        <mat-icon>more_vert</mat-icon>
                     </button>
                 </mat-list-item>
             </mat-list>
         </mat-card-content>
     </div>
 </div>
+
+<ng-template #menuTemplate>
+    <div class="options-menu" cdkMenu>
+      <button class="options-menu-item" cdkMenuItem>Edit</button>
+      <button class="options-menu-item" cdkMenuItem (click)="deleteSelectedTask()">Delete</button>
+    </div>
+</ng-template>
+
+<ng-template #editTemplate>
+    <div class="edit-menu" cdkMenu>
+      <button class="menu-item" cdkMenuItem>Edit</button>
+      <button class="menu-item" cdkMenuItem>Delete</button>
+    </div>
+</ng-template>

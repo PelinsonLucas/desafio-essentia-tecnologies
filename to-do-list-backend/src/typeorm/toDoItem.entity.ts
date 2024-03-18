@@ -5,6 +5,9 @@ export class ToDoItem {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column( {nullable: true} )
+    dueDate: Date;
+
     @Column()
     title: string;
 

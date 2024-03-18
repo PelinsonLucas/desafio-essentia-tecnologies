@@ -39,7 +39,7 @@
 }
 
 mat-divider{
-  height: 60px;
+  height: 30px;
 }
 .mat-mdc-card-content{
   width: 60%;
@@ -54,6 +54,9 @@ mat-divider{
   gap: 10px;
   align-items: center;
   border-radius: 10px;
+}
+.mat-mdc-floating-label{
+    padding-bottom: 20px;
 }
 
 .mat-mdc-form-field{
@@ -102,6 +105,10 @@ mat-divider{
   width: 100%;
 }
 
+.options-button{
+  z-index: 2;
+}
+
 // Task body styling
 
 .task{
@@ -140,12 +147,39 @@ mat-divider{
   padding: 10px;
 }
 
+// Menu style
+
+.options-menu{
+  display: inline-flex;
+  flex-direction: column;
+  min-width: 180px;
+  max-width: 280px;
+  border-radius: 5px;
+}
+
+.options-menu-item{
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+
+  user-select: none;
+  min-width: 64px;
+  line-height: 36px;
+  padding: 0 16px;
+
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex: 1;
+}
+
 // Mixin for color theming
 
 @mixin color($toDoList-theme){
   .to-do-list-container{
-    background-color: mat.get-theme-color($toDoList-theme, 'accent', 100);
-    color: mat.get-theme-color($toDoList-theme, 'accent', 100-contrast);
+    background-color: mat.get-theme-color($toDoList-theme, 'accent', 50);
+    color: mat.get-theme-color($toDoList-theme, 'accent', 50-contrast);
   }
 
   ::-webkit-scrollbar-track {
@@ -175,6 +209,22 @@ mat-divider{
   .title{
     color: mat.get-theme-color($toDoList-theme, 'primary', 600);
   }
+
+  .options-menu{
+    background-color: mat.get-theme-color($toDoList-theme, 'accent', 100);
+  }
+  .options-menu-item{
+    background-color: mat.get-theme-color($toDoList-theme, 'accent', 100);
+  }
+  .options-menu-item:hover {
+    background-color: mat.get-theme-color($toDoList-theme, 'primary', 300);
+  }
+  
+  .options-menu-item:active {
+    outline: none;
+    background-color: mat.get-theme-color($toDoList-theme, 'primary', 300);
+  }
+
 }
 
 @mixin theme($toDoList-theme) {
