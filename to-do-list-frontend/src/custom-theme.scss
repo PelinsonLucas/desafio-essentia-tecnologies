@@ -1,0 +1,87 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$md-todolist: (
+    50 : #e3e6e8,
+    100 : #b8c1c7,
+    200 : #8997a1,
+    300 : #5a6d7b,
+    400 : #364e5f,
+    500 : #132f43,
+    600 : #112a3d,
+    700 : #0e2334,
+    800 : #0b1d2c,
+    900 : #06121e,
+    A100 : #5ca2ff,
+    A200 : #2985ff,
+    A400 : #006af5,
+    A700 : #005fdb,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #ffffff,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+$md-todolistacc: (
+    50 : #e6e6e6,
+    100 : #bfc1c1,
+    200 : #959898,
+    300 : #6b6e6f,
+    400 : #4b4f50,
+    500 : #2b3031,
+    600 : #262b2c,
+    700 : #202425,
+    800 : #1a1e1f,
+    900 : #101313,
+    A100 : #66f3f3,
+    A200 : #37f0f0,
+    A400 : #00f3f3,
+    A700 : #00dada,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$toDoList-primary: mat.define-palette($md-todolist);
+$toDoList-accent: mat.define-palette($md-todolistacc, 700, 500, 100);
+
+$toDoList-warn: mat.define-palette(mat.$red-palette);
+
+$toDoList-theme: mat.define-light-theme((
+  color: (
+    primary: $toDoList-primary,
+    accent: $toDoList-accent,
+    warn: $toDoList-warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0
+));
+
+@include mat.all-component-themes($toDoList-theme);
+

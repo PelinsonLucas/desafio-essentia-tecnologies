@@ -1,0 +1,24 @@
+<div class="task-edit-menu">
+    <mat-divider></mat-divider>
+    <mat-card-header>
+        <mat-card-title class="title">{{title}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content role="region">
+        <form class="task-form">
+            <mat-form-field class="form-date" appearance="outline">
+                <mat-label>Due date</mat-label>
+                <input matInput name="date" required="true" [matDatepicker]="picker" [(ngModel)]="task.dueDate">
+                <mat-hint>MM/DD/YYYY</mat-hint>
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field class="form-field" appearance="outline">
+                <input matInput required="true" name="title" placeholder="Task title" [(ngModel)]="task.title">
+            </mat-form-field>
+            <mat-form-field class="form-field" appearance="outline">
+                <input matInput name="description" placeholder="Description" [(ngModel)]="task.description">
+            </mat-form-field>
+            <button mat-raised-button type="submit" color="primary" (click)="doAction()">{{buttonText}}</button>
+        </form>
+    </mat-card-content>
+</div>

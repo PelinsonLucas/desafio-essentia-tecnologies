@@ -1,0 +1,219 @@
+// Import Angular Material styles
+@use '@angular/material' as mat;  
+
+// Thin scrollbar
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+// Styles for the main to-do list container
+.to-do-list-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 98lvw;
+  height: 90lvh;
+  min-height: 500px;
+  min-width: 700px;
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.title{
+  font-size: 2.5rem;
+  font-weight: 500;
+}
+
+mat-divider{
+  height: 30px;
+}
+
+.filter-selection{
+  height: 85%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 35%;
+  min-width: 250px;
+  padding-bottom: 5%;
+  gap: 30px;
+  .calendar-card{
+    width: 100%;
+  }
+}
+
+// List formatting
+
+.list-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  .list-header{
+    position: sticky;
+    display: flex;
+    padding-top: 20px;
+    flex-direction: row;
+    button{
+      display: flex;
+      position: fixed;
+      right: 10%;
+      margin-top: 20px;
+    }
+  }
+}
+
+.list{
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  height: 100%;
+  width: 100%;
+  margin-top: 50px;
+}
+
+.mdc-list{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: fit-content;
+  width: 100%;
+}
+
+.options-button{
+  z-index: 2;
+}
+
+// Task body styling
+
+.task{
+  padding: 0px 10px 0px 10px;
+  align-self: center;
+  justify-content: center;
+  width: 80%;
+  .checkbox{
+    pointer-events: none;
+  }
+}
+
+.mat-mdc-list-item-unscoped-content{
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.task-title{
+  overflow: hidden;
+  text-wrap: wrap;
+  width: 48%;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+.task-description{
+  overflow: hidden;
+  text-wrap: wrap;
+  min-height: 100%;
+  width: 48%;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+// Menu style
+
+.options-menu{
+  display: inline-flex;
+  flex-direction: column;
+  min-width: 180px;
+  max-width: 280px;
+  border-radius: 5px;
+}
+
+.options-menu-item{
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+
+  user-select: none;
+  min-width: 64px;
+  line-height: 36px;
+  padding: 0 16px;
+
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex: 1;
+}
+
+// Mixin for color theming
+
+@mixin color($toDoList-theme){
+  .to-do-list-container{
+    background-color: mat.get-theme-color($toDoList-theme, 'accent', 50);
+    color: mat.get-theme-color($toDoList-theme, 'accent', 50-contrast);
+  }
+
+  ::-webkit-scrollbar-track {
+    background: mat.get-theme-color($toDoList-theme, 'accent', 50);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: mat.get-theme-color($toDoList-theme, 'primary', 200);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: mat.get-theme-color($toDoList-theme, 'primary', 300);
+  }
+
+  .task{
+    border-top: 1px solid mat.get-theme-color($toDoList-theme, 'primary', 400);
+  }
+
+  .task:hover{
+    background-color: mat.get-theme-color($toDoList-theme, 'primary', 100);
+  }
+
+  .task-creation-menu{
+    border: 2px solid mat.get-theme-color($toDoList-theme, 'primary', 400);
+  }
+
+  .title{
+    color: mat.get-theme-color($toDoList-theme, 'primary', 600);
+  }
+
+  .options-menu{
+    background-color: mat.get-theme-color($toDoList-theme, 'accent', 100);
+  }
+  .options-menu-item{
+    background-color: mat.get-theme-color($toDoList-theme, 'accent', 100);
+  }
+  .options-menu-item:hover {
+    background-color: mat.get-theme-color($toDoList-theme, 'primary', 300);
+  }
+  
+  .options-menu-item:active {
+    outline: none;
+    background-color: mat.get-theme-color($toDoList-theme, 'primary', 300);
+  }
+
+  .filter-selection{
+    border-right: 2px solid mat.get-theme-color($toDoList-theme, 'accent', 200);
+  }
+}
+
+@mixin theme($toDoList-theme) {
+  @if mat.theme-has($toDoList-theme, color) {
+    @include color($toDoList-theme);
+  }
+}
+  

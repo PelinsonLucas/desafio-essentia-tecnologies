@@ -1,0 +1,46 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+// Base App styles
+  .main {
+    width: 100lvw;
+    max-height: 100lvh;
+    height: 100lvh;
+    min-width: 800px;
+    min-height: 800px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: inherit;
+    position: relative;
+  }
+
+// Styles for the header bar
+  .header{
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    position: static;
+    top: 0;
+  }
+
+  .content{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+// Mixin for color theming
+  @mixin color($toDoList-theme){
+    .content{
+      background-color: mat.get-theme-color($toDoList-theme, 'accent', 300);
+      color: mat.get-theme-color($toDoList-theme, 'primary', 300-contrast);
+      --mat-app-background-color: mat.get-theme-color($toDoList-theme, 'accent', 500);
+    }
+  }
+
+  @mixin theme($toDoList-theme) {
+    @if mat.theme-has($toDoList-theme, color) {
+      @include color($toDoList-theme);
+    }
+  }
