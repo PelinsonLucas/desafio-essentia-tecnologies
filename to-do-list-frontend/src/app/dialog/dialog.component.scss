@@ -1,0 +1,49 @@
+.mat-mdc-card-header{
+    text-align: center;
+}
+
+.task-edit-menu{
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.mat-mdc-card-content{
+    width: 100%;
+    height: fit-content;
+    padding: 0px;
+}
+
+.task-form{
+    padding: 30px 15px 30px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.mat-mdc-floating-label{
+    padding-bottom: 20px;
+}
+
+.form-date{
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-field{
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+

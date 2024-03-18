@@ -1,25 +1,16 @@
 import { Component, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatInputModule } from '@angular/material/input';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatListModule } from '@angular/material/list';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatIconModule } from '@angular/material/icon';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { ToDoListAPIService } from '../to-do-list-api.service';
-import { CdkMenu, CdkMenuItem, CdkContextMenuTrigger, CdkMenuTrigger } from '@angular/cdk/menu';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { EditDialogComponent } from '../edit-dialog/edit-dialog.component';
+import { SharedModule } from '../shared.module';
+import { MatDialog } from '@angular/material/dialog';
+import { EditDialogComponent } from '../dialog/edit-dialog.component';
+import { CreateDialogComponent } from '../dialog/create-dialog.component';
+import { ToDoListAPIService } from '../to-do-list-api.service';
+import {FormGroup, FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { formatDate } from '@angular/common';
 
 export type Item = {
   id: number | null;
-  dueDate: number | null;
+  dueDate: Date | null;
   title: string;
   description: string;
   completed: boolean;
@@ -28,18 +19,23 @@ export type Item = {
 @Component({
   selector: 'app-to-do-list',
   standalone: true,
-  providers: [provideNativeDateAdapter()],
-  imports: [MatCardModule, MatFormFieldModule, MatDividerModule, CommonModule, MatButtonModule, CdkMenuItem, MatDatepickerModule,
-    MatListModule, MatCheckboxModule, MatIconModule, FormsModule, MatInputModule, CdkMenu, CdkContextMenuTrigger, CdkMenuTrigger],
+  imports: [ SharedModule, EditDialogComponent, CreateDialogComponent, FormsModule, ReactiveFormsModule],
   templateUrl: './to-do-list.component.html',
   styleUrl: './to-do-list.component.scss'
 })
 export class ToDoListComponent {
   @ViewChild('menuTrigger') menuTrigger: MatMenuTrigger;
 
+  fetchedTasks: Array<Item> = [];
   tasks: Array<Item> = [];
+
   newTask: Item = {id: null, dueDate: null, title: '', description: '', completed: false};
   selectedTask: Item | null = null;
+
+  dateRange = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
 
   constructor(private toDoListAPIService: ToDoListAPIService, public dialog: MatDialog) {}
 
@@ -47,26 +43,36 @@ export class ToDoListComponent {
     this.getTasks();
   }
 
-  async addTask() {
+  addTask() {
     if (this.newTask.title !== '') {
-      this.tasks.push((await this.toDoListAPIService.createToDoItem(this.newTask)).data);
+      this.toDoListAPIService.createToDoItem(this.newTask).then((response) => {
+        this.fetchedTasks.push(response.data);
+        this.filterTasks();
+      }).catch((err) => console.log(err));
       this.newTask = {id: null, dueDate: null, title: '', description: '', completed: false};
     }
   }
 
   getTasks() {
     this.toDoListAPIService.getToDoList().then((response) => {
-      this.tasks = response.data;
-    });
+      this.fetchedTasks = response.data;
+      this.filterTasks();
+    }).catch((err) => console.log(err));
   }
 
   updateTask(task: Item) {
-    this.toDoListAPIService.updateItem(task);
+    this.toDoListAPIService.updateItem(task).then(() => {
+      this.filterTasks();
+    }).catch((err) => console.log(err));
   }
 
   changeTaskCompletion(task: Item) {
+    const oldStatus = task.completed;
     task.completed = !task.completed;
-    this.toDoListAPIService.updateItem(task);
+    this.toDoListAPIService.updateItem(task).catch((err) => {
+      console.log(err);
+      task.completed = oldStatus;
+    });
   }
 
   setSelectedTask(task: Item) {
@@ -91,7 +97,34 @@ export class ToDoListComponent {
     //Restore focus
     dialogRef.afterClosed().subscribe((result) => {
       this.updateTask(result.data);
-      this.menuTrigger.focus();
     });
   }
+
+  openCreateDialog() {
+    const dialogRef = this.dialog.open(CreateDialogComponent, { restoreFocus: false});
+    //Restore focus
+    dialogRef.afterClosed().subscribe((result) => {
+      this.newTask = result.data;
+      this.addTask();
+      this.newTask = {id: null, dueDate: null, title: '', description: '', completed: false};
+    });
+  }
+
+  filterTasks(){
+    this.tasks = this.fetchedTasks.filter((task) => {
+      if (this.dateRange.value.start && formatDate(task.dueDate,'yyyy-MM-dd','en_US') < formatDate(this.dateRange.value.start,'yyyy-MM-dd','en_US')) {
+        return false;
+      }
+      if (this.dateRange.value.end && formatDate(task.dueDate,'yyyy-MM-dd','en_US') > formatDate(this.dateRange.value.end,'yyyy-MM-dd','en_US')) {
+        return false;
+      }
+      return true;
+    });
+  }
+
+  clearFilter(){
+    this.dateRange.setValue({start: null, end: null});
+    this.filterTasks();
+  }
+
 }
